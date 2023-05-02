@@ -37,16 +37,19 @@
                                                         </userDefinedRuntimeAttribute>
                                                     </userDefinedRuntimeAttributes>
                                                 </imageView>
-                                                <view opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BTd-yH-3X6" userLabel="GradientView">
-                                                    <rect key="frame" x="20" y="201" width="353" height="29"/>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="gradient" translatesAutoresizingMaskIntoConstraints="NO" id="McO-wm-eZa" userLabel="GradientView">
+                                                    <rect key="frame" x="20" y="200" width="353" height="30"/>
                                                     <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="layer.maskedCorners">
+                                                            <integer key="value" value="12"/>
+                                                        </userDefinedRuntimeAttribute>
                                                         <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
                                                             <integer key="value" value="16"/>
                                                         </userDefinedRuntimeAttribute>
                                                     </userDefinedRuntimeAttributes>
-                                                </view>
+                                                </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="27 августа 2022" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1Hm-Op-eAq" userLabel="DateLabel">
-                                                    <rect key="frame" x="28" y="201" width="345" height="21"/>
+                                                    <rect key="frame" x="28" y="200" width="345" height="22"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" name="ypWhite"/>
                                                     <nil key="highlightedColor"/>
@@ -58,26 +61,25 @@
                                                 </button>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="BTd-yH-3X6" firstAttribute="trailing" secondItem="bc8-sJ-t92" secondAttribute="trailing" id="4SN-Do-wgI"/>
-                                                <constraint firstItem="BTd-yH-3X6" firstAttribute="bottom" secondItem="bc8-sJ-t92" secondAttribute="bottom" id="62B-FF-r9B"/>
+                                                <constraint firstItem="bc8-sJ-t92" firstAttribute="trailing" secondItem="McO-wm-eZa" secondAttribute="trailing" id="AbC-gy-YKU"/>
                                                 <constraint firstItem="xFX-7F-jWz" firstAttribute="trailing" secondItem="bc8-sJ-t92" secondAttribute="trailing" id="BTO-iD-1tK"/>
                                                 <constraint firstItem="1Hm-Op-eAq" firstAttribute="leading" secondItem="bc8-sJ-t92" secondAttribute="leading" constant="8" id="C3E-cF-oYn"/>
                                                 <constraint firstItem="bc8-sJ-t92" firstAttribute="top" secondItem="Ifn-3b-dKu" secondAttribute="topMargin" id="OFJ-Is-jPG"/>
+                                                <constraint firstItem="bc8-sJ-t92" firstAttribute="bottom" secondItem="McO-wm-eZa" secondAttribute="bottom" id="SxT-cU-BL0"/>
+                                                <constraint firstItem="McO-wm-eZa" firstAttribute="top" secondItem="1Hm-Op-eAq" secondAttribute="top" id="TIS-Kw-sFJ"/>
                                                 <constraint firstItem="bc8-sJ-t92" firstAttribute="bottom" secondItem="1Hm-Op-eAq" secondAttribute="bottom" constant="8" id="VWF-nm-S9L"/>
                                                 <constraint firstAttribute="bottomMargin" secondItem="bc8-sJ-t92" secondAttribute="bottom" id="W3T-rq-OTC"/>
                                                 <constraint firstItem="bc8-sJ-t92" firstAttribute="leading" secondItem="Ifn-3b-dKu" secondAttribute="leadingMargin" id="YtY-BS-iZD"/>
                                                 <constraint firstItem="bc8-sJ-t92" firstAttribute="trailing" relation="lessThanOrEqual" secondItem="1Hm-Op-eAq" secondAttribute="trailing" id="aYj-Dy-y1t"/>
-                                                <constraint firstItem="BTd-yH-3X6" firstAttribute="top" secondItem="1Hm-Op-eAq" secondAttribute="top" id="bYe-VG-iag"/>
                                                 <constraint firstItem="xFX-7F-jWz" firstAttribute="top" secondItem="bc8-sJ-t92" secondAttribute="top" id="c9e-u8-mAP"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="bc8-sJ-t92" secondAttribute="trailing" id="sTw-LW-O6K"/>
-                                                <constraint firstItem="BTd-yH-3X6" firstAttribute="leading" secondItem="bc8-sJ-t92" secondAttribute="leading" id="wQS-dT-ccA"/>
+                                                <constraint firstItem="McO-wm-eZa" firstAttribute="leading" secondItem="bc8-sJ-t92" secondAttribute="leading" id="uMV-VG-2JV"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" name="ypBlack"/>
                                         <connections>
                                             <outlet property="cellImage" destination="bc8-sJ-t92" id="J9a-0e-M3e"/>
                                             <outlet property="dateLabel" destination="1Hm-Op-eAq" id="Byu-QU-0CT"/>
-                                            <outlet property="gradientView" destination="BTd-yH-3X6" id="5tm-4Y-ssU"/>
                                             <outlet property="likeButton" destination="xFX-7F-jWz" id="ZiZ-9U-FWb"/>
                                         </connections>
                                     </tableViewCell>
@@ -109,6 +111,7 @@
     <resources>
         <image name="0" width="200" height="132"/>
         <image name="InactiveLike" width="44" height="44"/>
+        <image name="gradient" width="343" height="30"/>
         <namedColor name="ypBlack">
             <color red="0.10199999809265137" green="0.10599999874830246" blue="0.13300000131130219" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>

@@ -36,26 +36,11 @@ extension ImagesListViewController {
             return
         }
 
-        cell.cellImage.image = image
-        cell.dateLabel.text = dateFormatter.string(from: Date())
-        configureLikeButton(for: cell, with: indexPath)
-        configureGradientView(for: cell)
-    }
-
-    private func configureLikeButton(for cell: ImagesListCell, with indexPath: IndexPath) {
         let isLiked = indexPath.row % 2 == 0
         let likeImage: UIImage = isLiked ? .activeLike : .inactiveLike
         cell.likeButton.setImage(likeImage, for: .normal)
-    }
-
-    private func configureGradientView(for cell: ImagesListCell) {
-        let gradientLayer = CAGradientLayer()
-        gradientLayer.frame = cell.gradientView.bounds
-        gradientLayer.colors = [
-            UIColor.ypBlackAlpha0.cgColor,
-            UIColor.ypBlackAlpha20.cgColor
-        ]
-        cell.gradientView.layer.addSublayer(gradientLayer)
+        cell.cellImage.image = image
+        cell.dateLabel.text = dateFormatter.string(from: Date())
     }
 }
 
