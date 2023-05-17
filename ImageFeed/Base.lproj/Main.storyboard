@@ -203,12 +203,12 @@
                         <color key="backgroundColor" name="ypBlack"/>
                         <constraints>
                             <constraint firstItem="BtI-CA-IB4" firstAttribute="centerX" secondItem="HMo-AB-aBM" secondAttribute="centerX" id="1Sz-tl-2Dq"/>
-                            <constraint firstItem="BRk-ij-Rpx" firstAttribute="leading" secondItem="HMo-AB-aBM" secondAttribute="leading" id="1cQ-Sp-QHj"/>
+                            <constraint firstItem="BRk-ij-Rpx" firstAttribute="leading" secondItem="Vgp-D5-WnW" secondAttribute="leading" id="1cQ-Sp-QHj"/>
                             <constraint firstAttribute="bottom" secondItem="BRk-ij-Rpx" secondAttribute="bottom" id="F0D-RQ-wM0"/>
                             <constraint firstItem="HMo-AB-aBM" firstAttribute="bottom" secondItem="BtI-CA-IB4" secondAttribute="bottom" constant="38" id="LSy-kx-KjZ"/>
                             <constraint firstItem="BRk-ij-Rpx" firstAttribute="top" secondItem="Vgp-D5-WnW" secondAttribute="top" id="VBd-yz-OaG"/>
                             <constraint firstItem="JQd-qC-ClY" firstAttribute="leading" secondItem="HMo-AB-aBM" secondAttribute="leading" constant="8" id="eB3-0s-VEr"/>
-                            <constraint firstItem="HMo-AB-aBM" firstAttribute="trailing" secondItem="BRk-ij-Rpx" secondAttribute="trailing" id="iN3-62-Wow"/>
+                            <constraint firstAttribute="trailing" secondItem="BRk-ij-Rpx" secondAttribute="trailing" id="iN3-62-Wow"/>
                             <constraint firstItem="JQd-qC-ClY" firstAttribute="top" secondItem="HMo-AB-aBM" secondAttribute="top" constant="8" id="jZ4-yJ-PEo"/>
                         </constraints>
                     </view>

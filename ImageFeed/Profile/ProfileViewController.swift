@@ -6,17 +6,17 @@
 import UIKit
 
 final class ProfileViewController: UIViewController {
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        .lightContent
-    }
-
     private enum Constants {
         static let fontSize23: CGFloat = 23
         static let fontSize13: CGFloat = 13
         static let leadingInset: CGFloat = 16
         static let labelTopInset: CGFloat = 8
-        static let avatarTopInset: CGFloat = 32
+        static let avatarTopInset: CGFloat = 76
         static let avatarWidthAndHeight: CGFloat = 70
+    }
+
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        .lightContent
     }
 
     override func viewDidLoad() {
@@ -27,10 +27,10 @@ final class ProfileViewController: UIViewController {
         view.addSubview(nameLabel)
         view.addSubview(loginLabel)
         view.addSubview(descriptionLabel)
-        
-        configureAndActivateConstraints()
+
+        activateConstraints()
     }
-    
+
     // MARK: - View Configuration
     private lazy var avatarImageView: UIImageView = {
         let imageView = UIImageView()
@@ -59,7 +59,7 @@ final class ProfileViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-    
+
     private lazy var loginLabel: UILabel = {
         let label = UILabel()
         label.text = "@ekaterina_nov"
@@ -68,7 +68,7 @@ final class ProfileViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-    
+
     private lazy var descriptionLabel: UILabel = {
         let label = UILabel()
         label.text = "Hello, world!"
@@ -77,25 +77,56 @@ final class ProfileViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-    
-    private func configureAndActivateConstraints() {
-        NSLayoutConstraint.activate([
-            view.safeAreaLayoutGuide.trailingAnchor.constraint(greaterThanOrEqualTo: nameLabel.trailingAnchor),
-            view.safeAreaLayoutGuide.trailingAnchor.constraint(greaterThanOrEqualTo: loginLabel.trailingAnchor),
-            view.safeAreaLayoutGuide.trailingAnchor.constraint(greaterThanOrEqualTo: descriptionLabel.trailingAnchor),
-            avatarImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: Constants.avatarTopInset),
-            avatarImageView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: Constants.leadingInset),
+
+    // MARK: - Constraints
+    private var avatarImageViewConstraints: [NSLayoutConstraint] {
+        [
+            avatarImageView.topAnchor.constraint(equalTo: view.topAnchor, constant: Constants.avatarTopInset),
+            avatarImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Constants.leadingInset),
             avatarImageView.widthAnchor.constraint(equalToConstant: Constants.avatarWidthAndHeight),
-            avatarImageView.heightAnchor.constraint(equalToConstant: Constants.avatarWidthAndHeight),
-            logoutButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -Constants.leadingInset),
-            logoutButton.centerYAnchor.constraint(equalTo: avatarImageView.centerYAnchor),
+            avatarImageView.heightAnchor.constraint(equalToConstant: Constants.avatarWidthAndHeight)
+        ]
+    }
+
+    private var logoutButtonConstraints: [NSLayoutConstraint] {
+        [
+            logoutButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Constants.leadingInset),
+            logoutButton.centerYAnchor.constraint(equalTo: avatarImageView.centerYAnchor)
+        ]
+    }
+
+    private var nameLabelConstraints: [NSLayoutConstraint] {
+        [
+            view.trailingAnchor.constraint(greaterThanOrEqualTo: nameLabel.trailingAnchor),
             nameLabel.topAnchor.constraint(equalTo: avatarImageView.bottomAnchor, constant: Constants.labelTopInset),
-            nameLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: Constants.leadingInset),
+            nameLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Constants.leadingInset)
+        ]
+    }
+
+    private var loginLabelConstraints: [NSLayoutConstraint] {
+        [
+            view.trailingAnchor.constraint(greaterThanOrEqualTo: loginLabel.trailingAnchor),
             loginLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: Constants.labelTopInset),
-            loginLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: Constants.leadingInset),
+            loginLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Constants.leadingInset)
+        ]
+    }
+
+    private var descriptionLabelConstraints: [NSLayoutConstraint] {
+        [
+            view.trailingAnchor.constraint(greaterThanOrEqualTo: descriptionLabel.trailingAnchor),
             descriptionLabel.topAnchor.constraint(equalTo: loginLabel.bottomAnchor, constant: Constants.labelTopInset),
-            descriptionLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: Constants.leadingInset)
-        ])
+            descriptionLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Constants.leadingInset)
+        ]
+    }
+
+    private func activateConstraints() {
+        NSLayoutConstraint.activate(
+            avatarImageViewConstraints +
+            logoutButtonConstraints +
+            nameLabelConstraints +
+            loginLabelConstraints +
+            descriptionLabelConstraints
+        )
     }
 
     @objc private func didTapLogoutButton() {
