@@ -11,7 +11,7 @@ final class ProfileViewController: UIViewController {
         static let fontSize13: CGFloat = 13
         static let leadingInset: CGFloat = 16
         static let labelTopInset: CGFloat = 8
-        static let avatarTopInset: CGFloat = 76
+        static let avatarTopInset: CGFloat = 32
         static let avatarWidthAndHeight: CGFloat = 70
     }
 
@@ -81,7 +81,7 @@ final class ProfileViewController: UIViewController {
     // MARK: - Constraints
     private var avatarImageViewConstraints: [NSLayoutConstraint] {
         [
-            avatarImageView.topAnchor.constraint(equalTo: view.topAnchor, constant: Constants.avatarTopInset),
+            avatarImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: Constants.avatarTopInset),
             avatarImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Constants.leadingInset),
             avatarImageView.widthAnchor.constraint(equalToConstant: Constants.avatarWidthAndHeight),
             avatarImageView.heightAnchor.constraint(equalToConstant: Constants.avatarWidthAndHeight)
