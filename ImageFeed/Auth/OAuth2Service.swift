@@ -11,7 +11,10 @@ final class OAuth2Service {
     private let urlSession = URLSession.shared
     private let oauth2TokenStorage = OAuth2TokenStorage()
 
-    private (set) var authToken: String? {
+    private var task: URLSessionTask?
+    private var lastCode: String?
+
+    private(set) var authToken: String? {
         get {
             return oauth2TokenStorage.token
         }
@@ -23,8 +26,14 @@ final class OAuth2Service {
     private init() {}
 
     func fetchAuthToken(code: String, completion: @escaping (Result<String, Error>) -> Void) {
-        let request = authTokenRequest(code: code)
-        let task = object(for: request) { [weak self] result in
+        assert(Thread.isMainThread)
+
+        if lastCode == code { return }
+        task?.cancel()
+        lastCode = code
+
+        let request = URLRequests.authToken(by: code)
+        let task = urlSession.objectTask(for: request) { [weak self] (result: Result<OAuthTokenResponseBody, Error>) in
             guard let self else { return }
             switch result {
             case .success(let body):
@@ -32,39 +41,13 @@ final class OAuth2Service {
                 self.authToken = authToken
                 completion(.success(authToken))
             case .failure(let error):
+                self.lastCode = nil
                 completion(.failure(error))
             }
+            self.task = nil
         }
+
+        self.task = task
         task.resume()
-    }
-}
-
-extension OAuth2Service {
-    private func object(
-        for request: URLRequest,
-        completion: @escaping (Result<OAuthTokenResponseBody, Error>) -> Void
-    ) -> URLSessionTask {
-        let decoder = JSONDecoder()
-        return urlSession.data(for: request) { (result: Result<Data, Error>) in
-            let response = result.flatMap { data -> Result<OAuthTokenResponseBody, Error> in
-                Result { try decoder.decode(OAuthTokenResponseBody.self, from: data) }
-            }
-            completion(response)
-        }
-    }
-
-    private func authTokenRequest(code: String) -> URLRequest {
-        return URLRequest.makeHTTPRequest(
-            path: "oauth/token",
-            httpMethod: "POST",
-            baseUrl: AuthorizeBaseURL,
-            queryItems: [
-                URLQueryItem(name: "client_id", value: AccessKey),
-                URLQueryItem(name: "client_secret", value: SecretKey),
-                URLQueryItem(name: "redirect_uri", value: RedirectURI),
-                URLQueryItem(name: "code", value: code),
-                URLQueryItem(name: "grant_type", value: "authorization_code")
-            ]
-        )
     }
 }
