@@ -78,7 +78,6 @@ final class SplashViewController: UIViewController {
     }
 }
 
-
 // MARK: - AuthViewControllerDelegate
 extension SplashViewController: AuthViewControllerDelegate {
     func authViewController(_ vc: AuthViewController, didAuthenticateWithCode code: String) {
@@ -89,7 +88,10 @@ extension SplashViewController: AuthViewControllerDelegate {
             self.fetchAuthToken(code: code)
         }
     }
+}
 
+// MARK: - Fetch data
+extension SplashViewController {
     private func fetchAuthToken(code: String) {
         oauth2Service.fetchAuthToken(code: code) { [weak self] result in
             guard let self else { return }

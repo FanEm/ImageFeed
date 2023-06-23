@@ -29,7 +29,7 @@ final class ProfileService {
             case .success(let body):
                 self.profile = Profile(
                     username: body.username,
-                    name: "\(body.firstName) \(body.lastName)",
+                    name: "\(body.firstName) \(body.lastName ?? "")",
                     loginName: "@\(body.username)",
                     bio: body.bio ?? ""
                 )
