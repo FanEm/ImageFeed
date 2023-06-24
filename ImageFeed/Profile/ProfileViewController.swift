@@ -4,6 +4,7 @@
 //
 
 import UIKit
+import Kingfisher
 
 final class ProfileViewController: UIViewController {
     private enum Constants {
@@ -13,7 +14,13 @@ final class ProfileViewController: UIViewController {
         static let labelTopInset: CGFloat = 8
         static let avatarTopInset: CGFloat = 32
         static let avatarWidthAndHeight: CGFloat = 70
+        static let avatarCornerRadius: CGFloat = 20
     }
+
+    private let profileService = ProfileService.shared
+    private let profileImageService = ProfileImageService.shared
+
+    private var profileImageServiceObserver: NSObjectProtocol?
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
         .lightContent
@@ -21,6 +28,8 @@ final class ProfileViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        view.backgroundColor = .ypBlack
 
         view.addSubview(avatarImageView)
         view.addSubview(logoutButton)
@@ -29,12 +38,15 @@ final class ProfileViewController: UIViewController {
         view.addSubview(descriptionLabel)
 
         activateConstraints()
+        updateProfileDetails(profile: profileService.profile)
+        profileImageServiceObserver = createProfileImageObserver()
+        updateAvatar()
     }
 
     // MARK: - View Configuration
     private lazy var avatarImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = .avatarImage
+        imageView.image = .avatarImageStub
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
@@ -127,6 +139,47 @@ final class ProfileViewController: UIViewController {
             loginLabelConstraints +
             descriptionLabelConstraints
         )
+    }
+
+    // MARK: - Profile details
+    private func updateProfileDetails(profile: Profile?) {
+        guard let profile else {
+            assertionFailure("There is no profile data")
+            return
+        }
+        nameLabel.text = profile.name
+        loginLabel.text = profile.loginName
+        descriptionLabel.text = profile.bio
+    }
+
+    private func updateAvatar() {
+        guard
+            let profileImageURL = profileImageService.avatarURL,
+            let url = URL(string: profileImageURL)
+        else { return }
+
+        let placeholder: UIImage = .avatarImageStub
+        let processor = RoundCornerImageProcessor(cornerRadius: Constants.avatarCornerRadius)
+
+        avatarImageView.kf.indicatorType = .activity
+        avatarImageView.kf.setImage(
+            with: url,
+            placeholder: placeholder,
+            options: [.processor(processor),
+                      .cacheSerializer(FormatIndicatedCacheSerializer.png)]
+        )
+    }
+    
+    private func createProfileImageObserver() -> NSObjectProtocol {
+        return NotificationCenter.default
+            .addObserver(
+                forName: ProfileImageService.DidChangeNotification,
+                object: nil,
+                queue: .main
+            ) { [weak self] _ in
+                guard let self else { return }
+                self.updateAvatar()
+            }
     }
 
     @objc private func didTapLogoutButton() {
