@@ -1,0 +1,109 @@
+//
+//  ImagesListService.swift
+//  ImageFeed
+//
+
+import Foundation
+
+final class ImagesListService {
+    private enum Constants {
+        static let photosPerPage: Int = 10
+    }
+    
+    static let shared = ImagesListService()
+
+    static let DidChangeNotification = Notification.Name(rawValue: "ImagesListServiceDidChange")
+
+    private let urlSession = URLSession.shared
+
+    private(set) var photos: [Photo] = []
+
+    private var lastLoadedPage: Int = 0
+    private var task: URLSessionTask?
+    private var token: String? {
+        OAuth2TokenStorage.shared.token
+    }
+
+    private init() {}
+
+    func fetchPhotosNextPage() {
+        assert(Thread.isMainThread)
+        guard
+            task == nil,
+            let token = token
+        else { return }
+        
+        let nextPage = lastLoadedPage + 1
+        
+        let request = URLRequests.photos(page: nextPage,perPage: Constants.photosPerPage, token: token)
+
+        let task = urlSession.objectTask(for: request) { [weak self] (result: Result<[PhotoResult], Error>) in
+            guard let self else { return }
+
+            switch result {
+            case .success(let body):
+                DispatchQueue.main.async {
+                    let newPhotos = PhotoResult.convertToPhoto(photoResults: body)
+                    self.photos.append(contentsOf: newPhotos)
+                    self.postSuccessPhotosReceivingNotification()
+                    self.lastLoadedPage += 1
+                }
+            case .failure(let error):
+                assertionFailure(error.localizedDescription)
+            }
+            self.task = nil
+        }
+        self.task = task
+        task.resume()
+    }
+    
+    func changeLike(photoId: String, isLike: Bool, _ completion: @escaping (Result<Void, Error>) -> Void) {
+        guard
+            task == nil,
+            let token = token
+        else { return }
+
+        let request = isLike
+        ? URLRequests.addLike(photoId: photoId, token: token)
+        : URLRequests.deleteLike(photoId: photoId, token: token)
+
+        let task = urlSession.objectTask(for: request) { [weak self] (result: Result<PhotoLikeResult, Error>) in
+            guard let self else { return }
+
+            switch result {
+            case .success(let body):
+                DispatchQueue.main.async {
+                    if let index = self.photos.firstIndex(where: { $0.id == photoId }) {
+                        let photo = self.photos[index]
+                        let newPhoto = Photo(
+                            id: photo.id,
+                            size: photo.size,
+                            createdAt: photo.createdAt,
+                            welcomeDescription: photo.welcomeDescription,
+                            thumbImageUrl: photo.thumbImageUrl,
+                            largeImageUrl: photo.largeImageUrl,
+                            isLiked: body.photo.isLiked
+                        )
+                        self.photos[index] = newPhoto
+                    }
+                    completion(.success(()))
+                }
+            case .failure(let error):
+                completion(.failure(error))
+            }
+            self.task = nil
+        }
+        self.task = task
+        task.resume()
+    }
+
+    // MARK: - Private functions
+    private func postSuccessPhotosReceivingNotification() {
+        NotificationCenter
+            .default
+            .post(
+                name: ImagesListService.DidChangeNotification,
+                object: self
+            )
+    }
+}
