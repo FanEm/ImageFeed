@@ -12,8 +12,6 @@ final class ImagesListService {
     
     static let shared = ImagesListService()
 
-    static let DidChangeNotification = Notification.Name(rawValue: "ImagesListServiceDidChange")
-
     private let urlSession = URLSession.shared
 
     private(set) var photos: [Photo] = []
@@ -74,17 +72,7 @@ final class ImagesListService {
             case .success(let body):
                 DispatchQueue.main.async {
                     if let index = self.photos.firstIndex(where: { $0.id == photoId }) {
-                        let photo = self.photos[index]
-                        let newPhoto = Photo(
-                            id: photo.id,
-                            size: photo.size,
-                            createdAt: photo.createdAt,
-                            welcomeDescription: photo.welcomeDescription,
-                            thumbImageUrl: photo.thumbImageUrl,
-                            largeImageUrl: photo.largeImageUrl,
-                            isLiked: body.photo.isLiked
-                        )
-                        self.photos[index] = newPhoto
+                        self.photos[index].isLiked = body.photo.isLiked
                     }
                     completion(.success(()))
                 }
@@ -102,7 +90,7 @@ final class ImagesListService {
         NotificationCenter
             .default
             .post(
-                name: ImagesListService.DidChangeNotification,
+                name: .imagesListServiceDidChange,
                 object: self
             )
     }

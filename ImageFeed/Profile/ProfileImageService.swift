@@ -7,7 +7,7 @@ import Foundation
 
 final class ProfileImageService {
     static let shared = ProfileImageService()
-    static let DidChangeNotification = Notification.Name(rawValue: "ProfileImageProviderDidChange")
+
     private let urlSession = URLSession.shared
     
     private(set) var avatarURL: String?
@@ -45,7 +45,7 @@ final class ProfileImageService {
         NotificationCenter
             .default
             .post(
-                name: ProfileImageService.DidChangeNotification,
+                name: .profileImageProviderDidChange,
                 object: self,
                 userInfo: ["URL": self.avatarURL!])
     }

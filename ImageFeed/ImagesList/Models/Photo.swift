@@ -12,5 +12,5 @@ struct Photo {
     let welcomeDescription: String?
     let thumbImageUrl: String
     let largeImageUrl: String
-    let isLiked: Bool
+    var isLiked: Bool
 }

@@ -37,7 +37,7 @@ final class ImagesListViewController: UIViewController {
     private func createImageListServiceObserver() -> NSObjectProtocol {
         return NotificationCenter.default
             .addObserver(
-                forName: ImagesListService.DidChangeNotification,
+                forName: .imagesListServiceDidChange,
                 object: nil,
                 queue: .main
             ) { [weak self] _ in
@@ -78,9 +78,8 @@ extension ImagesListViewController {
         let placeholder: UIImage = .imageStub
         cell.cellImage.kf.indicatorType = .activity
 
-        cell.cellImage.kf.setImage(with: url, placeholder: placeholder) { [weak self] _ in
-            guard let self else { return }
-            self.tableView.reloadRows(at: [indexPath], with: .automatic)
+        cell.cellImage.kf.setImage(with: url, placeholder: placeholder) { [weak tableView] _ in
+            tableView?.reloadRows(at: [indexPath], with: .automatic)
         }
     }
 }
@@ -90,7 +89,7 @@ extension ImagesListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         guard let image = photos[safe: indexPath.row] else {
             assertionFailure("There is no photo with index \(indexPath.row)")
-            return CGFloat(0)
+            return .zero
         }
         let imageInsets = UIEdgeInsets(top: 4, left: 16, bottom: 4, right: 16)
         let imageViewWidth = tableView.bounds.width - imageInsets.left - imageInsets.right
@@ -109,9 +108,10 @@ extension ImagesListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let photo = photos[safe: indexPath.row] else { return }
         let viewController = SingleImageViewController()
-        viewController.image = photo
         viewController.modalPresentationStyle = .fullScreen
-        present(viewController, animated: true)
+        present(viewController, animated: true) {
+            viewController.image = photo
+        }
     }
 }
 
