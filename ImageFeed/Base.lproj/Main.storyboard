@@ -21,7 +21,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <color key="backgroundColor" name="ypBlack"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ImagesListCell" rowHeight="241" id="pqn-Pw-4pD" customClass="ImagesListCell" customModule="ImageFeed" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ImagesListCell" rowHeight="241" id="pqn-Pw-4pD" customClass="ImagesListCell" customModule="ImageFeed" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="50" width="375" height="241"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="pqn-Pw-4pD" id="Ifn-3b-dKu">
@@ -58,6 +58,9 @@
                                                     <rect key="frame" x="315" y="11" width="44" height="44"/>
                                                     <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                                     <state key="normal" image="InactiveLike"/>
+                                                    <connections>
+                                                        <action selector="likeButtonClicked" destination="pqn-Pw-4pD" eventType="touchUpInside" id="gEX-hj-Gwv"/>
+                                                    </connections>
                                                 </button>
                                             </subviews>
                                             <constraints>
@@ -102,7 +105,6 @@
                     <tabBarItem key="tabBarItem" title="" image="TabEditorialActive" id="uHM-tS-W7e"/>
                     <connections>
                         <outlet property="tableView" destination="0wB-zD-rkc" id="TGE-39-aWq"/>
-                        <segue destination="osc-HA-oNg" kind="presentation" identifier="ShowSingleImage" id="WgB-ju-04b"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -252,80 +254,6 @@
             </objects>
             <point key="canvasLocation" x="-987.02290076335873" y="-895.07042253521126"/>
         </scene>
-        <!--Single Image View Controller-->
-        <scene sceneID="PwT-8X-FVj">
-            <objects>
-                <viewController modalPresentationStyle="fullScreen" id="osc-HA-oNg" customClass="SingleImageViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="Vgp-D5-WnW">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BRk-ij-Rpx">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                                <subviews>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" placeholderIntrinsicWidth="414" placeholderIntrinsicHeight="414" image="0" translatesAutoresizingMaskIntoConstraints="NO" id="tB8-k8-Bm2">
-                                        <rect key="frame" x="0.0" y="0.0" width="414" height="414"/>
-                                    </imageView>
-                                </subviews>
-                                <constraints>
-                                    <constraint firstItem="tB8-k8-Bm2" firstAttribute="leading" secondItem="BRk-ij-Rpx" secondAttribute="leading" id="Ulz-Fw-oxO"/>
-                                    <constraint firstItem="tB8-k8-Bm2" firstAttribute="top" secondItem="BRk-ij-Rpx" secondAttribute="top" id="YgV-RV-pXD"/>
-                                    <constraint firstAttribute="bottom" secondItem="tB8-k8-Bm2" secondAttribute="bottom" id="ded-Yf-Rnf"/>
-                                    <constraint firstAttribute="trailing" secondItem="tB8-k8-Bm2" secondAttribute="trailing" id="qXw-ic-lDx"/>
-                                </constraints>
-                                <viewLayoutGuide key="contentLayoutGuide" id="1qo-fg-mCW"/>
-                                <viewLayoutGuide key="frameLayoutGuide" id="lmK-Fl-8YZ"/>
-                                <connections>
-                                    <outlet property="delegate" destination="osc-HA-oNg" id="7HK-y1-b6r"/>
-                                </connections>
-                            </scrollView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JQd-qC-ClY" userLabel="BackButton">
-                                <rect key="frame" x="8" y="8" width="48" height="48"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="48" id="jFo-tM-LxS"/>
-                                    <constraint firstAttribute="width" constant="48" id="r8y-93-NQF"/>
-                                </constraints>
-                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                <state key="normal" image="Backward"/>
-                                <connections>
-                                    <action selector="didTapBackButton" destination="osc-HA-oNg" eventType="touchUpInside" id="rCN-g2-4bS"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BtI-CA-IB4" userLabel="ShareButton">
-                                <rect key="frame" x="162.5" y="579" width="50" height="50"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="50" id="4nu-sm-l6B"/>
-                                    <constraint firstAttribute="height" constant="50" id="tL1-1f-GV6"/>
-                                </constraints>
-                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                <state key="normal" image="Sharing"/>
-                                <connections>
-                                    <action selector="didTapShareButton" destination="osc-HA-oNg" eventType="touchUpInside" id="Txj-bk-bzj"/>
-                                </connections>
-                            </button>
-                        </subviews>
-                        <viewLayoutGuide key="safeArea" id="HMo-AB-aBM"/>
-                        <color key="backgroundColor" name="ypBlack"/>
-                        <constraints>
-                            <constraint firstItem="BtI-CA-IB4" firstAttribute="centerX" secondItem="HMo-AB-aBM" secondAttribute="centerX" id="1Sz-tl-2Dq"/>
-                            <constraint firstItem="BRk-ij-Rpx" firstAttribute="leading" secondItem="Vgp-D5-WnW" secondAttribute="leading" id="1cQ-Sp-QHj"/>
-                            <constraint firstAttribute="bottom" secondItem="BRk-ij-Rpx" secondAttribute="bottom" id="F0D-RQ-wM0"/>
-                            <constraint firstItem="HMo-AB-aBM" firstAttribute="bottom" secondItem="BtI-CA-IB4" secondAttribute="bottom" constant="38" id="LSy-kx-KjZ"/>
-                            <constraint firstItem="BRk-ij-Rpx" firstAttribute="top" secondItem="Vgp-D5-WnW" secondAttribute="top" id="VBd-yz-OaG"/>
-                            <constraint firstItem="JQd-qC-ClY" firstAttribute="leading" secondItem="HMo-AB-aBM" secondAttribute="leading" constant="8" id="eB3-0s-VEr"/>
-                            <constraint firstAttribute="trailing" secondItem="BRk-ij-Rpx" secondAttribute="trailing" id="iN3-62-Wow"/>
-                            <constraint firstItem="JQd-qC-ClY" firstAttribute="top" secondItem="HMo-AB-aBM" secondAttribute="top" constant="8" id="jZ4-yJ-PEo"/>
-                        </constraints>
-                    </view>
-                    <connections>
-                        <outlet property="imageView" destination="tB8-k8-Bm2" id="ZmH-gB-QEz"/>
-                        <outlet property="scrollView" destination="BRk-ij-Rpx" id="r8V-8W-GjG"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Gaa-z3-6Hg" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1020.6106870229007" y="-1292.2535211267607"/>
-        </scene>
         <!--Auth Navigation Controller-->
         <scene sceneID="aTK-iJ-ufo">
             <objects>
@@ -348,10 +276,8 @@
     <resources>
         <image name="0" width="1200" height="795"/>
         <image name="AuthScreenLogo" width="60" height="60"/>
-        <image name="Backward" width="24" height="24"/>
         <image name="BackwardBlack" width="24" height="24"/>
         <image name="InactiveLike" width="44" height="44"/>
-        <image name="Sharing" width="50" height="50"/>
         <image name="TabEditorialActive" width="30" height="30"/>
         <image name="gradient" width="343" height="30"/>
         <namedColor name="ypBlack">

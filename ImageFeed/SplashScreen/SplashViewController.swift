@@ -8,7 +8,7 @@ import UIKit
 
 // MARK: - SplashViewController
 final class SplashViewController: UIViewController {
-    private let oauth2TokenStorage = OAuth2TokenStorage()
+    private let oauth2TokenStorage = OAuth2TokenStorage.shared
     private let oauth2Service = OAuth2Service.shared
     private let profileImageService = ProfileImageService.shared
     private let profileService = ProfileService.shared
@@ -130,6 +130,14 @@ extension SplashViewController {
     }
 
     private func showAlertWithAuthError() {
-        AlertPresenter.show(in: presentedViewController ?? self, model: Alert.authError)
+        let model = AlertModel(
+            title: "Что-то пошло не так(",
+            message: "Не удалось войти в систему",
+            primaryButtonText: "OK",
+            secondaryButtonText: nil,
+            primaryButtonCompletion: {},
+            secondaryButtonCompletion: {}
+        )
+        AlertPresenter.show(in: presentedViewController ?? self, model: model)
     }
 }

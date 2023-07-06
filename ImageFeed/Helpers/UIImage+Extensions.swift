@@ -11,6 +11,9 @@ extension UIImage {
     static var avatarImage: UIImage { UIImage(named: "UserPick") ?? UIImage() }
     static var exit: UIImage { UIImage(named: "Exit") ?? UIImage() }
     static var avatarImageStub: UIImage { UIImage(named: "UserpickStub") ?? UIImage() }
+    static var imageStub: UIImage { UIImage(named: "ImageStub") ?? UIImage() }
     static var tabBarProfileActive: UIImage { UIImage(named: "TabProfileActive") ?? UIImage() }
     static var launchScreenLogo: UIImage { UIImage(named: "LaunchScreenLogo") ?? UIImage() }
+    static var sharingIcon: UIImage { UIImage(named: "Sharing") ?? UIImage() }
+    static var backwardIcon: UIImage { UIImage(named: "Backward") ?? UIImage() }
  }

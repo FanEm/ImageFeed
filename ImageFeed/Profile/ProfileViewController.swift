@@ -19,6 +19,7 @@ final class ProfileViewController: UIViewController {
 
     private let profileService = ProfileService.shared
     private let profileImageService = ProfileImageService.shared
+    private let oauth2TokenStorage = OAuth2TokenStorage.shared
 
     private var profileImageServiceObserver: NSObjectProtocol?
 
@@ -183,6 +184,29 @@ final class ProfileViewController: UIViewController {
     }
 
     @objc private func didTapLogoutButton() {
-        // TODO: add action
+        showLogOutAlert()
+    }
+
+    private func showLogOutAlert() {
+        let model = AlertModel(
+            title: "Пока, пока!",
+            message: "Уверены что хотите выйти?",
+            primaryButtonText: "Да",
+            secondaryButtonText: "Нет",
+            primaryButtonCompletion: {[weak self] in
+                guard let self else { return }
+                WebViewViewController.cleanWKData()
+                self.oauth2TokenStorage.removeToken()
+                self.presentSplashViewController()
+            },
+            secondaryButtonCompletion: {}
+        )
+        AlertPresenter.show(in: self, model: model)
+    }
+
+    private func presentSplashViewController() {
+        guard let window = UIApplication.shared.windows.first else { fatalError("Invalid Configuration") }
+        let viewController = SplashViewController()
+        window.rootViewController = viewController
     }
 }

@@ -12,12 +12,21 @@ final class AlertPresenter {
             message: model.message,
             preferredStyle: .alert
         )
-
-        let action = UIAlertAction(title: model.buttonText, style: .cancel) { _ in
-            model.completion()
+        
+        if let primaryButtonText = model.primaryButtonText {
+            let primaryButtonAction = UIAlertAction(title: primaryButtonText, style: .cancel) { _ in
+                model.primaryButtonCompletion()
+            }
+            alert.addAction(primaryButtonAction)
         }
-
-        alert.addAction(action)
+        
+        if let secondaryButtonText = model.secondaryButtonText {
+            let secondaryButtonAction = UIAlertAction(title: secondaryButtonText, style: .default) { _ in
+                model.secondaryButtonCompletion()
+            }
+            alert.addAction(secondaryButtonAction)
+        }
+        
         controller.present(alert, animated: true, completion: nil)
     }
 }

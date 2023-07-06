@@ -6,8 +6,10 @@
 struct AlertModel {
     let title: String
     let message: String
-    let buttonText: String
-    let completion: () -> Void
+    let primaryButtonText: String?
+    let secondaryButtonText: String?
+    let primaryButtonCompletion: () -> Void
+    let secondaryButtonCompletion: () -> Void
 }
 
 
