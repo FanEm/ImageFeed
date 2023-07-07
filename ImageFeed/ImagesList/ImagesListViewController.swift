@@ -76,10 +76,24 @@ extension ImagesListViewController {
         guard let url = URL(string: photo.thumbImageUrl) else { return }
 
         let placeholder: UIImage = .imageStub
+        let retry = DelayRetryStrategy(
+            maxRetryCount: 2,
+            retryInterval: .seconds(3)
+        )
         cell.cellImage.kf.indicatorType = .activity
 
-        cell.cellImage.kf.setImage(with: url, placeholder: placeholder) { [weak tableView] _ in
-            tableView?.reloadRows(at: [indexPath], with: .automatic)
+        cell.cellImage.kf.setImage(
+            with: url,
+            placeholder: placeholder,
+            options: [.retryStrategy(retry)]
+        ) { [weak tableView] result in
+            switch result {
+            case .success(_):
+                tableView?.reloadRows(at: [indexPath], with: .automatic)
+            case .failure(_):
+                cell.cellImage.image = .imageStub
+            }
+            
         }
     }
 }
