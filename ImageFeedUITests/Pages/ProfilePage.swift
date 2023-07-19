@@ -21,11 +21,14 @@ struct ProfilePage {
         XCTAssertTrue(logoutButton.exists)
         XCTAssertTrue(nameLabel.exists)
         XCTAssertTrue(loginLabel.exists)
-        XCTAssertTrue(descriptionLabel.exists)
-        
+
         XCTAssertEqual(nameLabel.label, userProfileData.name)
         XCTAssertEqual(loginLabel.label, userProfileData.login)
-        XCTAssertEqual(descriptionLabel.label, userProfileData.description)
+
+        if !userProfileData.description.isEmpty {
+            XCTAssertTrue(descriptionLabel.exists)
+            XCTAssertEqual(descriptionLabel.label, userProfileData.description)
+        }
     }
 
     // MARK: - Private
