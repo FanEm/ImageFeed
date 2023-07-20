@@ -5,7 +5,16 @@
 
 import Foundation
 
-final class ImagesListService {
+// MARK: - ImagesListServiceProtocol
+protocol ImagesListServiceProtocol {
+    var photos: [Photo] { get set }
+
+    func fetchPhotosNextPage()
+    func changeLike(photoId: String, isLike: Bool, _ completion: @escaping (Result<Void, Error>) -> Void)
+}
+
+// MARK: - ImagesListService
+final class ImagesListService: ImagesListServiceProtocol {
     private enum Constants {
         static let photosPerPage: Int = 10
     }
@@ -14,7 +23,7 @@ final class ImagesListService {
 
     private let urlSession = URLSession.shared
 
-    private(set) var photos: [Photo] = []
+    var photos: [Photo] = []
 
     private var lastLoadedPage: Int = 0
     private var task: URLSessionTask?
@@ -56,10 +65,8 @@ final class ImagesListService {
     }
     
     func changeLike(photoId: String, isLike: Bool, _ completion: @escaping (Result<Void, Error>) -> Void) {
-        guard
-            task == nil,
-            let token = token
-        else { return }
+        assert(Thread.isMainThread)
+        guard let token else { return }
 
         let request = isLike
         ? URLRequests.addLike(photoId: photoId, token: token)

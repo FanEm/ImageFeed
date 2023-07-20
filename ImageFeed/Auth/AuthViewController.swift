@@ -12,23 +12,40 @@ protocol AuthViewControllerDelegate: AnyObject {
 
 // MARK: - AuthViewController
 final class AuthViewController: UIViewController {
-    private let ShowWebViewSegueIdentifier = "ShowWebView"
-
     weak var delegate: AuthViewControllerDelegate?
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
         .lightContent
     }
 
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == ShowWebViewSegueIdentifier {
-            guard let webViewViewController = segue.destination as? WebViewViewController else {
-                fatalError("Failed to prepare for \(ShowWebViewSegueIdentifier)")
-            }
-            webViewViewController.delegate = self
-        } else {
-            super.prepare(for: segue, sender: sender)
-        }
+    private lazy var authView = {
+        let view = AuthView()
+        view.signInButton.addTarget(
+            nil,
+            action: #selector(didTapSignInButton),
+            for: .touchUpInside
+        )
+        return view
+    }()
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        view = authView
+    }
+
+    @objc private func didTapSignInButton() {
+        let webViewViewController = WebViewViewController()
+        let authHelper = AuthHelper()
+        let webViewPresenter = WebViewPresenter(authHelper: authHelper)
+        webViewViewController.presenter = webViewPresenter
+        webViewPresenter.view = webViewViewController
+        webViewViewController.delegate = self
+
+        webViewViewController.modalPresentationStyle = .fullScreen
+        webViewViewController.modalTransitionStyle = .crossDissolve
+
+        navigationController?.pushViewController(webViewViewController, animated: true)
     }
 }
 
@@ -39,6 +56,6 @@ extension AuthViewController: WebViewViewControllerDelegate {
     }
 
     func webViewViewControllerDidCancel(_ vc: WebViewViewController) {
-        dismiss(animated: true)
+        navigationController?.popViewController(animated: true)
     }
 }

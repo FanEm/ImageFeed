@@ -13,10 +13,6 @@ final class SplashViewController: UIViewController {
     private let profileImageService = ProfileImageService.shared
     private let profileService = ProfileService.shared
 
-    private var mainStoryboard: UIStoryboard {
-        UIStoryboard(name: "Main", bundle: .main)
-    }
-
     override var preferredStatusBarStyle: UIStatusBarStyle {
         .lightContent
     }
@@ -54,16 +50,10 @@ final class SplashViewController: UIViewController {
         ])
     }
     
+    // MARK: - Private functions
     private func presentAuthViewController() {
-        guard
-            let authViewController = mainStoryboard
-                .instantiateViewController(withIdentifier: "AuthViewController") as? AuthViewController,
-            let navigationController = mainStoryboard
-                .instantiateViewController(withIdentifier: "AuthNavigationController") as? AuthNavigationController
-        else {
-            assertionFailure("Instantiating AuthViewController or AuthNavigationController failed")
-            return
-        }
+        let authViewController = AuthViewController()
+        let navigationController = AuthNavigationController()
 
         authViewController.delegate = self
         navigationController.viewControllers = [authViewController]
@@ -73,7 +63,7 @@ final class SplashViewController: UIViewController {
 
     private func switchToTabBarController() {
         guard let window = UIApplication.shared.windows.first else { fatalError("Invalid Configuration") }
-        let tabBarController = mainStoryboard.instantiateViewController(withIdentifier: "TabBarViewController")
+        let tabBarController = TabBarController()
         window.rootViewController = tabBarController
     }
 }
@@ -81,12 +71,9 @@ final class SplashViewController: UIViewController {
 // MARK: - AuthViewControllerDelegate
 extension SplashViewController: AuthViewControllerDelegate {
     func authViewController(_ vc: AuthViewController, didAuthenticateWithCode code: String) {
-        vc.dismiss(animated: true) { [weak self] in
-            guard let self else { return }
-
-            UIBlockingProgressHUD.show()
-            self.fetchAuthToken(code: code)
-        }
+        vc.navigationController?.popViewController(animated: true)
+        UIBlockingProgressHUD.show()
+        self.fetchAuthToken(code: code)
     }
 }
 
@@ -130,14 +117,6 @@ extension SplashViewController {
     }
 
     private func showAlertWithAuthError() {
-        let model = AlertModel(
-            title: "Что-то пошло не так(",
-            message: "Не удалось войти в систему",
-            primaryButtonText: "OK",
-            secondaryButtonText: nil,
-            primaryButtonCompletion: {},
-            secondaryButtonCompletion: {}
-        )
-        AlertPresenter.show(in: presentedViewController ?? self, model: model)
+        AlertPresenter.show(in: presentedViewController ?? self, model: .authError)
     }
 }

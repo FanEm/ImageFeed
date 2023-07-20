@@ -28,7 +28,7 @@ final class ProfileImageService {
             guard let self else { return }
             switch result {
             case .success(let body):
-                self.avatarURL = body.profileImage.small
+                self.avatarURL = body.profileImage.large
                 completion(.success(self.avatarURL!))
                 postSuccessAvatarUrlReceivingNotification()
             case .failure(let error):

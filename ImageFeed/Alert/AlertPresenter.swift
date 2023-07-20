@@ -27,6 +27,7 @@ final class AlertPresenter {
             alert.addAction(secondaryButtonAction)
         }
         
+        alert.view.accessibilityIdentifier = AccessibilityIdentifier.Alert.view
         controller.present(alert, animated: true, completion: nil)
     }
 }

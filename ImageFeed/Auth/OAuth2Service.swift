@@ -10,6 +10,7 @@ final class OAuth2Service {
 
     private let urlSession = URLSession.shared
     private let oauth2TokenStorage = OAuth2TokenStorage.shared
+    private let authHelper = AuthHelper()
 
     private var task: URLSessionTask?
     private var lastCode: String?
@@ -32,7 +33,7 @@ final class OAuth2Service {
         task?.cancel()
         lastCode = code
 
-        let request = URLRequests.authToken(by: code)
+        let request = authHelper.authToken(by: code)
         let task = urlSession.objectTask(for: request) { [weak self] (result: Result<OAuthTokenResponseBody, Error>) in
             guard let self else { return }
             switch result {

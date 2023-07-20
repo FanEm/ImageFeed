@@ -24,6 +24,7 @@ final class SingleImageViewController: UIViewController {
         
         scrollView.delegate = self
         
+        view.accessibilityIdentifier = AccessibilityIdentifier.SingleImageScreen.view
         view.backgroundColor = .ypBlack
         view.addSubview(scrollView)
         scrollView.addSubview(imageView)
@@ -59,6 +60,7 @@ final class SingleImageViewController: UIViewController {
     // MARK: - View Configuration
     private lazy var imageView: UIImageView = {
         let imageView = UIImageView()
+        imageView.accessibilityIdentifier = AccessibilityIdentifier.SingleImageScreen.imageView
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
@@ -67,6 +69,7 @@ final class SingleImageViewController: UIViewController {
         let scrollView = UIScrollView()
         scrollView.minimumZoomScale = 0.1
         scrollView.maximumZoomScale = 1.25
+        scrollView.accessibilityIdentifier = AccessibilityIdentifier.SingleImageScreen.scrollView
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         return scrollView
     }()
@@ -79,6 +82,7 @@ final class SingleImageViewController: UIViewController {
             action: #selector(didTapShareButton),
             for: .touchUpInside
         )
+        button.accessibilityIdentifier = AccessibilityIdentifier.SingleImageScreen.shareButton
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -91,6 +95,7 @@ final class SingleImageViewController: UIViewController {
             action: #selector(didTapBackButton),
             for: .touchUpInside
         )
+        button.accessibilityIdentifier = AccessibilityIdentifier.SingleImageScreen.backButton
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -165,11 +170,7 @@ final class SingleImageViewController: UIViewController {
     }
     
     private func showAlertWithFullScreenImageError(url: URL) {
-        let model = AlertModel(
-            title: "Что-то пошло не так",
-            message: "Попробовать ещё раз?",
-            primaryButtonText: "Повторить",
-            secondaryButtonText: "Не надо",
+        let model = AlertModel.fullScreenImageError(
             primaryButtonCompletion: { [weak self] in
                 guard let self else { return }
                 self.setImage(with: url)
@@ -179,7 +180,8 @@ final class SingleImageViewController: UIViewController {
                 self.dismiss(animated: true)
             }
         )
-        AlertPresenter.show(in: presentedViewController ?? self, model: model)
+        AlertPresenter.show(in: self, model: model)
+//        AlertPresenter.show(in: presentedViewController ?? self, model: model)
     }
 
     private func rescaleAndCenterImageInScrollView(image: UIImage) {
