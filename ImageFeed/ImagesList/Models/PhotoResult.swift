@@ -23,19 +23,21 @@ struct PhotoResult: Decodable {
         case urls
         case isLiked = "liked_by_user"
     }
-    
-    static func convertToPhoto(photoResults: [PhotoResult]) -> [Photo] {
-        let dateFormatter = ISO8601DateFormatter()
+}
 
-        return photoResults.map { Photo(
-            id: $0.id,
-            size: CGSize(width: $0.width, height: $0.height),
-            createdAt: dateFormatter.date(from: $0.createdAt),
-            welcomeDescription: $0.description,
-            thumbImageUrl: $0.urls.thumb,
-            largeImageUrl: $0.urls.full,
-            isLiked: $0.isLiked
-        )}
+extension PhotoResult {
+    private static let formatter = ISO8601DateFormatter()
+
+    var toPhoto: Photo {
+        Photo(
+            id: self.id,
+            size: CGSize(width: self.width, height: self.height),
+            createdAt: Self.formatter.date(from: self.createdAt),
+            welcomeDescription: self.description,
+            thumbImageUrl: self.urls.thumb,
+            largeImageUrl: self.urls.full,
+            isLiked: self.isLiked
+        )
     }
 }
 

@@ -23,7 +23,7 @@ final class ImagesListView: UIView {
     }
 
     // MARK: - View elements
-    lazy var tableView: UITableView = {
+    var tableView: UITableView = {
         let tableView = UITableView()
         tableView.backgroundColor = .ypBlack
         tableView.register(

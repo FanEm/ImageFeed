@@ -31,20 +31,16 @@ final class WebViewViewController: UIViewController & WebViewViewControllerProto
         .darkContent
     }
 
-    private lazy var webViewView = {
-        let view = WebViewView()
-        view.backButton.addTarget(
-            nil,
-            action: #selector(didTapBackButton),
-            for: .touchUpInside
-        )
-        return view
-    }()
+    private lazy var webViewView = WebViewView {
+        self.didTapBackButton()
+    }
+    
+    override func loadView() {
+        view = webViewView
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        view = webViewView
 
         webViewView.webView.navigationDelegate = self
         presenter?.viewDidLoad()

@@ -16,8 +16,12 @@ final class AuthView: UIView {
         static let signInButtonCornerRadius: CGFloat = 16
     }
 
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    private var signInButtonAction: () -> Void
+
+    init(_ signInButtonAction: @escaping () -> Void) {
+        self.signInButtonAction = signInButtonAction
+
+        super.init(frame: .zero)
 
         backgroundColor = .ypBlack
         accessibilityIdentifier = AccessibilityIdentifier.AuthScreen.view
@@ -33,7 +37,7 @@ final class AuthView: UIView {
     }
     
     // MARK: - View elements
-    lazy var logoImageView: UIImageView = {
+    private var logoImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = .authScreenLogo
         imageView.accessibilityIdentifier = AccessibilityIdentifier.AuthScreen.logoImageView
@@ -41,7 +45,7 @@ final class AuthView: UIView {
         return imageView
     }()
 
-    lazy var signInButton: UIButton = {
+    private lazy var signInButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = .ypWhite
         button.layer.cornerRadius = Constants.signInButtonCornerRadius
@@ -51,9 +55,15 @@ final class AuthView: UIView {
         button.titleLabel?.font = UIFont(name: "SFProText-Bold", size: Constants.fontSize17)
         button.accessibilityIdentifier = AccessibilityIdentifier.AuthScreen.signInButton
         button.translatesAutoresizingMaskIntoConstraints = false
+        button.addTarget(self, action: #selector(onTap), for: .touchUpInside)
+
         return button
     }()
-    
+
+    @objc private func onTap() {
+        signInButtonAction()
+    }
+
     // MARK: - Constraints
     private var logoImageViewConstraints: [NSLayoutConstraint] {
         [

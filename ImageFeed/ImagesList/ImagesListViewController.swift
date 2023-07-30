@@ -14,19 +14,17 @@ protocol ImagesListViewControllerProtocol: AnyObject {
 }
 
 // MARK: - ImagesListViewController
-final class ImagesListViewController: UIViewController & ImagesListViewControllerProtocol {
+final class ImagesListViewController: LightContentViewController & ImagesListViewControllerProtocol {
     var presenter: ImagesListPresenterProtocol?
 
     private let imagesListView = ImagesListView()
-
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        .lightContent
+    
+    override func loadView() {
+        view = imagesListView
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        view = imagesListView
 
         imagesListView.tableView.dataSource = self
         imagesListView.tableView.delegate = self

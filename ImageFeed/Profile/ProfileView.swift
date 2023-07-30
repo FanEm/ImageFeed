@@ -14,9 +14,12 @@ final class ProfileView: UIView {
         static let avatarTopInset: CGFloat = 32
         static let avatarWidthAndHeight: CGFloat = 70
     }
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+
+    private var logoutButtonAction: () -> Void
+
+    init(_ logoutButtonAction: @escaping () -> Void) {
+        self.logoutButtonAction = logoutButtonAction
+        super.init(frame: .zero)
 
         backgroundColor = .ypBlack
         accessibilityIdentifier = AccessibilityIdentifier.ProfileScreen.view
@@ -47,6 +50,7 @@ final class ProfileView: UIView {
         button.setImage(.exit, for: .normal)
         button.accessibilityIdentifier = AccessibilityIdentifier.ProfileScreen.logoutButton
         button.translatesAutoresizingMaskIntoConstraints = false
+        button.addTarget(self, action: #selector(onTap), for: .touchUpInside)
         return button
     }()
 
@@ -76,6 +80,10 @@ final class ProfileView: UIView {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
+
+    @objc private func onTap() {
+        logoutButtonAction()
+    }
 
     // MARK: - Constraints
     private var avatarImageViewConstraints: [NSLayoutConstraint] {

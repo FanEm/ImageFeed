@@ -7,16 +7,12 @@ import UIKit
 import Kingfisher
 import ProgressHUD
 
-final class SingleImageViewController: UIViewController {
+final class SingleImageViewController: LightContentViewController {
     private enum Constants {
         static let backButtonWidthAndHeight: CGFloat = 48
         static let shareButtonWidthAndHeight: CGFloat = 50
         static let backButtonTopAndLeadingInset: CGFloat = 8
         static let shareButtonBottomInset: CGFloat = 38
-    }
-    
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        .lightContent
     }
 
     override func viewDidLoad() {
@@ -181,7 +177,6 @@ final class SingleImageViewController: UIViewController {
             }
         )
         AlertPresenter.show(in: self, model: model)
-//        AlertPresenter.show(in: presentedViewController ?? self, model: model)
     }
 
     private func rescaleAndCenterImageInScrollView(image: UIImage) {
