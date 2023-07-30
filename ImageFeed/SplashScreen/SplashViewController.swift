@@ -7,15 +7,11 @@ import Foundation
 import UIKit
 
 // MARK: - SplashViewController
-final class SplashViewController: UIViewController {
+final class SplashViewController: LightContentViewController {
     private let oauth2TokenStorage = OAuth2TokenStorage.shared
     private let oauth2Service = OAuth2Service.shared
     private let profileImageService = ProfileImageService.shared
     private let profileService = ProfileService.shared
-
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        .lightContent
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()

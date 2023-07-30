@@ -50,7 +50,7 @@ final class ImagesListService: ImagesListServiceProtocol {
             switch result {
             case .success(let body):
                 DispatchQueue.main.async {
-                    let newPhotos = PhotoResult.convertToPhoto(photoResults: body)
+                    let newPhotos = body.map { $0.toPhoto }
                     self.photos.append(contentsOf: newPhotos)
                     self.postSuccessPhotosReceivingNotification()
                     self.lastLoadedPage += 1

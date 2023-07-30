@@ -12,8 +12,12 @@ final class WebViewView: UIView {
         static let backButtonWidthAndHeight: CGFloat = 42
     }
 
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    private var backButtonAction: () -> Void
+
+    init(_ backButtonAction: @escaping () -> Void) {
+        self.backButtonAction = backButtonAction
+
+        super.init(frame: .zero)
 
         backgroundColor = .ypWhite
 
@@ -23,35 +27,40 @@ final class WebViewView: UIView {
 
         activateConstraints()
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     // MARK: - View elements
-    lazy var webView: WKWebView = {
+    var webView: WKWebView = {
         let webView = WKWebView()
         webView.accessibilityIdentifier = AccessibilityIdentifier.WebViewScreen.webView
         webView.translatesAutoresizingMaskIntoConstraints = false
         return webView
     }()
 
-    lazy var backButton: UIButton = {
-        let button = UIButton()
-        button.backgroundColor = .ypWhite
-        button.setImage(.backwardBlackIcon, for: .normal)
-        button.accessibilityIdentifier = AccessibilityIdentifier.WebViewScreen.backButton
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
-    }()
-
-    lazy var progressView: UIProgressView = {
+    var progressView: UIProgressView = {
         let progressView = UIProgressView()
         progressView.progressTintColor = .ypBlack
         progressView.accessibilityIdentifier = AccessibilityIdentifier.WebViewScreen.progressView
         progressView.translatesAutoresizingMaskIntoConstraints = false
         return progressView
     }()
+
+    private lazy var backButton: UIButton = {
+        let button = UIButton()
+        button.backgroundColor = .ypWhite
+        button.setImage(.backwardBlackIcon, for: .normal)
+        button.accessibilityIdentifier = AccessibilityIdentifier.WebViewScreen.backButton
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.addTarget(self, action: #selector(onTap), for: .touchUpInside)
+        return button
+    }()
+
+    @objc private func onTap() {
+        backButtonAction()
+    }
 
     // MARK: - Constraints
     private var webViewConstraints: [NSLayoutConstraint] {

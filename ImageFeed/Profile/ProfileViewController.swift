@@ -15,30 +15,23 @@ protocol ProfileViewControllerProtocol: AnyObject {
 }
 
 // MARK: - ProfileViewController
-final class ProfileViewController: UIViewController & ProfileViewControllerProtocol {
+final class ProfileViewController: LightContentViewController & ProfileViewControllerProtocol {
     private enum Constants {
         static let avatarCornerRadius: CGFloat = 60
     }
 
     var presenter: ProfilePresenterProtocol?
 
-    private lazy var profileView = {
-        let view = ProfileView()
-        view.logoutButton.addTarget(
-            nil,
-            action: #selector(didTapLogoutButton),
-            for: .touchUpInside
-        )
-        return view
-    }()
-
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        .lightContent
+    private lazy var profileView = ProfileView {
+        self.didTapLogoutButton()
+    }
+    
+    override func loadView() {
+        view = profileView
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view = profileView
         presenter?.viewDidLoad()
     }
 

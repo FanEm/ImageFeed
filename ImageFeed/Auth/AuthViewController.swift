@@ -11,27 +11,13 @@ protocol AuthViewControllerDelegate: AnyObject {
 }
 
 // MARK: - AuthViewController
-final class AuthViewController: UIViewController {
+final class AuthViewController: LightContentViewController {
     weak var delegate: AuthViewControllerDelegate?
 
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        .lightContent
-    }
-
-    private lazy var authView = {
-        let view = AuthView()
-        view.signInButton.addTarget(
-            nil,
-            action: #selector(didTapSignInButton),
-            for: .touchUpInside
-        )
-        return view
-    }()
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        view = authView
+    override func loadView() {
+        view = AuthView {
+            self.didTapSignInButton()
+        }
     }
 
     @objc private func didTapSignInButton() {
