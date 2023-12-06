@@ -1,5 +1,12 @@
 # Image Feed
 
+# Установка
+
+- Склонировать проект
+- Перейти в директорию проекта
+- Открыть `ImageFeed.xcodeproj` в `Xcode`
+- Зависимости `SPM` установятся автоматически
+
 # Ссылки
 
 - [Дизайн в Figma](https://tinyurl.com/image-feed-figma)
