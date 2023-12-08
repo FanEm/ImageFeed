@@ -12,6 +12,13 @@
 - [Дизайн в Figma](https://tinyurl.com/image-feed-figma)
 - [Unsplash API](https://unsplash.com/documentation)
 
+# Скринкаст
+
+<details>
+  <summary>Посмотреть</summary>
+https://github.com/FanEm/Tracker/assets/2598509/556ceb81-c7e8-464c-a090-0a29926f8e48
+</details>
+
 # Назначение и цели приложения
 
 Многостраничное приложение предназначено для просмотра изображений через API Unsplash.
